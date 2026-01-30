@@ -1,0 +1,25 @@
+# Render Configuration for Universal Streaming Scraper API
+# Deploy: https://render.com/deploy?repo=https://github.com/yourusername/universal-scraper-api
+
+services:
+  - type: web
+    name: universal-scraper-api
+    runtime: python
+    plan: standard
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: PORT
+        value: 8000
+      - key: DEBUG
+        value: false
+    healthCheckPath: /health
+    autoDeploy: true
+    # Scaling
+    scaling:
+      minInstances: 1
+      maxInstances: 3
+      targetCPUPercent: 70
+      targetMemoryPercent: 80
